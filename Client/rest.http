@@ -1,0 +1,54 @@
+POST http://localhost:3333/auth/login
+Content-Type: application/json
+
+{
+  "email": "alyfer@example.com",
+  "password": "senha123"
+}
+
+###
+POST http://localhost:3333/auth/register
+Content-Type: application/json
+
+{
+  "name": "Alyfer Reis",
+  "email": "alyfer@example.com",
+  "password": "senha123"
+}
+
+
+###
+POST http://localhost:3333/tasks
+Content-Type: application/json
+
+{
+  "title": "Minha tarefa",
+  "description": "Descrição da minha tarefa"
+}
+
+###
+PUT http://localhost:3333/tasks
+Content-Type: application/json
+
+{
+  "id": "f4f18434-b072-46df-b21c-6ccb1cc75fa0",
+  "title": "Minha tarefa atualizada",
+  "description": "Descrição da minha tarefa atualizada"
+}
+
+###
+PUT http://localhost:3333/tasks/status
+Content-Type: application/json
+
+{
+  "id": "f4f18434-b072-46df-b21c-6ccb1cc75fa0",
+  "status": "completed"
+}
+
+###
+GET http://localhost:3333/tasks
+Content-Type: application/json
+###
+
+DELETE http://localhost:3333/tasks/f4f18434-b072-46df-b21c-6ccb1cc75fa0 
+Content-Type: application/json
