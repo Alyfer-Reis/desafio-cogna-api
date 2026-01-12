@@ -3,9 +3,8 @@ import { Task } from 'src/domain/entity/Task';
 import type { TaskRepositoryInterface } from 'src/domain/repository/task-repository.interface';
 import {
   TaskChangeStatusDto,
-  TaskCreateDto,
+  TaskDto,
   TaskOutputDto,
-  TaskUpdateDto,
 } from './task.dto';
 
 @Injectable()
@@ -15,7 +14,7 @@ export class TaskService {
     private readonly taskRepository: TaskRepositoryInterface,
   ) {}
 
-  async create(userId: string, taskCreateDto: TaskCreateDto): Promise<void> {
+  async create(userId: string, taskCreateDto: TaskDto): Promise<void> {
     const task = Task.create({
       userId,
       title: taskCreateDto.title,
@@ -37,8 +36,25 @@ export class TaskService {
     }));
   }
 
-  async update(userId: string, taskUpdateDto: TaskUpdateDto): Promise<void> {
-    const task = await this.taskRepository.findById(taskUpdateDto.id, userId);
+  async findById(userId: string, id: string): Promise<TaskOutputDto> {
+    const task = await this.taskRepository.findById(id, userId);
+    if (!task) {
+      throw new NotFoundException('Tarefa não encontrada');
+    }
+
+    return {
+      id: task.id,
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      createdAt: task.createdAt,
+      updatedAt: task.updatedAt,
+    };
+  }
+
+  async update(userId: string, id: string, taskUpdateDto: TaskDto): Promise<void> {
+    console.log('Updating task with DTO:', taskUpdateDto);
+    const task = await this.taskRepository.findById(id, userId);
     if (!task) {
       throw new NotFoundException('Tarefa não encontrada');
     }
@@ -50,10 +66,11 @@ export class TaskService {
 
   async changeStatus(
     userId: string,
+    id: string,
     taskChangeStatusDto: TaskChangeStatusDto,
   ): Promise<void> {
     const task = await this.taskRepository.findById(
-      taskChangeStatusDto.id,
+      id,
       userId,
     );
     if (!task) {

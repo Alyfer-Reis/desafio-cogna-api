@@ -9,11 +9,17 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
       stopAtFirstError: true,
       transform: true,
     }),
   );
+
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN!.split(','),
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   app.useGlobalFilters(new DomainExceptionFilter());
   app.use(cookieParser());
 

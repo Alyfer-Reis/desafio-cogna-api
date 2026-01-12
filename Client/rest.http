@@ -25,29 +25,32 @@ Content-Type: application/json
   "title": "Minha tarefa",
   "description": "Descrição da minha tarefa"
 }
-
+  
 ###
-PUT http://localhost:3333/tasks
+PUT http://localhost:3333/tasks/2718fd6a-687a-4700-8422-1eb8f8643aa6
 Content-Type: application/json
 
 {
-  "id": "f4f18434-b072-46df-b21c-6ccb1cc75fa0",
   "title": "Minha tarefa atualizada",
   "description": "Descrição da minha tarefa atualizada"
 }
 
 ###
-PUT http://localhost:3333/tasks/status
+PUT http://localhost:3333/tasks/status/a1730523-5b54-4f93-834c-b838a442b4d2
 Content-Type: application/json
 
 {
-  "id": "f4f18434-b072-46df-b21c-6ccb1cc75fa0",
   "status": "completed"
 }
 
 ###
 GET http://localhost:3333/tasks
 Content-Type: application/json
+###
+
+GET http://localhost:3333/tasks/b7bfbe3a-27ba-4730-a9dc-f2843c6fe958
+Content-Type: application/json
+
 ###
 
 DELETE http://localhost:3333/tasks/f4f18434-b072-46df-b21c-6ccb1cc75fa0 

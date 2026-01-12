@@ -13,9 +13,8 @@ import { JwtAuthGuard } from 'src/infra/auth/jwt-auth.guard';
 import type {
   AuthenticatedRequest,
   TaskChangeStatusDto,
-  TaskCreateDto,
-  TaskOutputDto,
-  TaskUpdateDto,
+  TaskDto,
+  TaskOutputDto
 } from './task.dto';
 import { TaskService } from './task.service';
 
@@ -27,26 +26,29 @@ export class TaskController {
   @Post()
   async create(
     @Request() req: AuthenticatedRequest,
-    @Body() taskDto: TaskCreateDto,
+    @Body() taskDto: TaskDto,
   ) {
     await this.taskService.create(req.user.id, taskDto);
   }
 
-  @Put()
+  @Put(':id')
   async update(
     @Request() req: AuthenticatedRequest,
-    @Body() taskDto: TaskUpdateDto,
+    @Param('id') id: string,
+    @Body() taskDto: TaskDto,
   ) {
-    return await this.taskService.update(req.user.id, taskDto);
+    return await this.taskService.update(req.user.id, id, taskDto);
   }
 
-  @Put('/status')
+  @Put('/status/:id')
   async changeStatus(
     @Request() req: AuthenticatedRequest,
+    @Param('id') id: string,
     @Body() taskChangeStatusDto: TaskChangeStatusDto,
   ) {
     return await this.taskService.changeStatus(
       req.user.id,
+      id,
       taskChangeStatusDto,
     );
   }
@@ -54,6 +56,14 @@ export class TaskController {
   @Get()
   async getAll(@Request() req: AuthenticatedRequest): Promise<TaskOutputDto[]> {
     return await this.taskService.getAll(req.user.id);
+  }
+
+  @Get(':id')
+  async findById(
+    @Request() req: AuthenticatedRequest,
+    @Param('id') id: string,
+  ): Promise<TaskOutputDto> {
+    return await this.taskService.findById(req.user.id, id);
   }
 
   @Delete(':id')
