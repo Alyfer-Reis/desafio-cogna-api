@@ -65,12 +65,11 @@ describe('TaskService', () => {
   describe('update', () => {
     it('should update a task successfully', async () => {
       const valuesUpdate = {
-        id: valueTaskInitial.id,
         title: 'New Title',
         description: 'New Description',
       };
 
-      await service.update(valueTaskInitial.userId, valuesUpdate);
+      await service.update(valueTaskInitial.userId, valueTaskInitial.id, valuesUpdate);
 
       const existingTask = await repository.findById(
         valueTaskInitial.id,
@@ -82,8 +81,7 @@ describe('TaskService', () => {
 
     it('should throw NotFoundException if task does not exist', async () => {
       await expect(
-        service.update(valueTaskInitial.userId, {
-          id: 'id-que-nao-existe',
+        service.update(valueTaskInitial.userId, 'non-existent-id', {
           title: '',
           description: '',
         }),
@@ -94,11 +92,10 @@ describe('TaskService', () => {
   describe('changeStatus', () => {
     it('should change status successfully', async () => {
       const valuesStatus = {
-        id: valueTaskInitial.id,
         status: TaskStatus.COMPLETED,
       };
 
-      await service.changeStatus(valueTaskInitial.userId, valuesStatus);
+      await service.changeStatus(valueTaskInitial.userId, valueTaskInitial.id, valuesStatus);
 
       const existingTask = await repository.findById(
         valueTaskInitial.id,
